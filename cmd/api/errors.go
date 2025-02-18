@@ -9,7 +9,12 @@ import (
 // Later we'll upgrade this to use structured logging, and record additional information
 // about the request including the HTTP method and URL.
 func (app *application) logError(request *http.Request, err error) {
-	app.logger.Println(err)
+	// Use the PrintError() method to log the error message, and include the current
+	// request method and URL as properties in the log entry.
+	app.logger.PrintError(err, map[string]string{
+		"request_method":	request.Method,
+		"request_url":		request.URL.String(),
+	})
 }
 
 // The errorResponse() method is generic helper for sending JSON-formatted error
